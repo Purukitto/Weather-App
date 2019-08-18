@@ -27,8 +27,10 @@ class _MyAppState extends State<MyApp> {
     var cityDecodedJson = jsonDecode(cityRes.body);
     weatherCity = WeatherCity.fromJson(cityDecodedJson);
     var weatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=" +
-        weatherCity.toString() +
-        ",in&appid=" +
+        weatherCity.city +
+        "," +
+        weatherCity.countryCode +
+        "&appid=" +
         //Calling open weather map's API key from apikey.dart
         weatherKey;
     var res = await http.get(weatherUrl);
@@ -40,18 +42,35 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.black,
       drawer: Drawer(),
       appBar: AppBar(
+        title: Text(weatherData.name),
         elevation: 0,
         backgroundColor: Colors.transparent,
       ),
-      body: Container(
-        child: Row(
-          children: <Widget>[
-            Text(weatherData.name),
-            Text(weatherData.weather[0].main),
-          ],
-        ),
+      body: Stack(
+        fit: StackFit.expand,
+        children: <Widget>[
+          Center(
+            child: Container(
+              height: 100,
+              child: Text(
+                weatherData.weather[0].main,
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+          Center(
+            child: Container(
+              height: 50,
+              child: Text(
+                weatherData.weather[0].description,
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }

@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:weather/apikey.dart'; //to call api key
+import 'package:weather/components/weather.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:weather/components/weather.dart';
-import 'package:weather/services/cityservice.dart';
+import 'package:weather/components/city.dart';
+import 'package:weather/apikey.dart'; //to call api key
 
 class MyApp extends StatefulWidget {
   @override
@@ -11,7 +11,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  WeatherData weather;
+  WeatherData weatherData;
+  WeatherCity weatherCity;
 
   @override
   void initState() {
@@ -19,31 +20,39 @@ class _MyAppState extends State<MyApp> {
     fetchData();
   }
 
-  fetchData() async {
-    var weatherData = await loadWeather();
-    setState(() {});
-  }
+  var cityUrl = "http://ip-api.com/json/";
 
-  Future<String> _loadWeatherAsset() async {
-    var wcity = await loadCity();
+  fetchData() async {
+    var cityRes = await http.get(cityUrl);
+    var cityDecodedJson = jsonDecode(cityRes.body);
+    weatherCity = WeatherCity.fromJson(cityDecodedJson);
     var weatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=" +
-        wcity +
+        weatherCity.toString() +
         ",in&appid=" +
         //Calling open weather map's API key from apikey.dart
         weatherKey;
     var res = await http.get(weatherUrl);
-    return res.body.toString();
-  }
-
-  Future loadWeather() async {
-    String jsonWeather = await _loadWeatherAsset();
-    final jsonRes = json.decode(jsonWeather);
-    WeatherData wdata = new WeatherData.fromJson(jsonRes);
-    return wdata;
+    var decodedJson = jsonDecode(res.body);
+    weatherData = WeatherData.fromJson(decodedJson);
+    setState(() {});
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(body: Container());
+    return Scaffold(
+      drawer: Drawer(),
+      appBar: AppBar(
+        elevation: 0,
+        backgroundColor: Colors.transparent,
+      ),
+      body: Container(
+        child: Row(
+          children: <Widget>[
+            Text(weatherData.name),
+            Text(weatherData.weather[0].main),
+          ],
+        ),
+      ),
+    );
   }
 }

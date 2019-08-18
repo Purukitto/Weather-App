@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:weather/apikey.dart';
+import 'package:weather/apikey.dart'; //to call api key
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:weather/components/weather.dart';
@@ -29,6 +29,7 @@ class _MyAppState extends State<MyApp> {
     var weatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=" +
         wcity +
         ",in&appid=" +
+        //Calling open weather map's API key from apikey.dart
         weatherKey;
     var res = await http.get(weatherUrl);
     return res.body.toString();

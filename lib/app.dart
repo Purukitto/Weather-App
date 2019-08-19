@@ -5,7 +5,6 @@ import 'dart:convert';
 import 'package:weather/components/city.dart';
 import 'package:weather/components/geticon.dart';
 import 'package:weather/apikey.dart'; //to call api key
-import 'package:location/location.dart';
 
 class MyApp extends StatefulWidget {
   @override

@@ -4,7 +4,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:weather/components/city.dart';
 import 'package:weather/components/geticon.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:weather/apikey.dart'; //to call api key
 
 class MyApp extends StatefulWidget {
@@ -28,16 +27,14 @@ class _MyAppState extends State<MyApp> {
     setState(() {
       isLoading = true; //Data is loading
     });
-    GeolocationStatus geolocationStatus =
-        await Geolocator().checkGeolocationPermissionStatus();
-    print(geolocationStatus);
-    Position position = await Geolocator()
-        .getCurrentPosition(desiredAccuracy: LocationAccuracy.high);
-    print(position);
+    //TODO: TEST WITH LOCATION ACCURACY
+    var cityUrl = "http://ip-api.com/json/";
+    var cityRes = await http.get(cityUrl);
+    var cityDecodedJson = jsonDecode(cityRes.body);
+    weatherCity = WeatherCity.fromJson(cityDecodedJson);
 
-    weatherCity.city = "Chennai";
-    weatherCity.countryCode = "IN";
-
+    //TODO: TEST
+    //weatherCity.city = 'Chennai';
     var weatherUrl = "https://api.openweathermap.org/data/2.5/weather?q=" +
         weatherCity.city +
         "," +

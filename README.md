@@ -1,4 +1,7 @@
 # Weather-App
+
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/c3ef0d169261429682efbc6d16a1b1b5)](https://app.codacy.com/app/purukitto/Weather-App?utm_source=github.com&utm_medium=referral&utm_content=Purukitto/Weather-App&utm_campaign=Badge_Grade_Dashboard)
+
 An android app to check weather in your locality
 
 ## TODO
